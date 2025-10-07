@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { inactiveGrid, items } from "./constant";
 import RenderChildren from "@/helpers/RenderChildren";
+import { useRouter } from "next/navigation";
 
 type gridTransitionHandlerType = {
   type: "row" | "col";
@@ -19,6 +20,8 @@ export default function BentoGrid({
   children: React.ReactNode | null;
 }) {
   const [active, setActive] = useState<number | null>(null);
+
+  const router = useRouter();
 
   const gridTransitionHandler = ({
     type,
@@ -54,12 +57,11 @@ export default function BentoGrid({
           key={id}
           layout
           transition={{
-            layout: { type: "spring", stiffness: 180, damping: 24 }, // khusus position
-            gridColumn: { duration: 0.6, ease: "easeInOut" }, // size manual
+            layout: { type: "spring", stiffness: 180, damping: 24 },
+            gridColumn: { duration: 0.6, ease: "easeInOut" },
             gridRow: { duration: 0.6, ease: "easeInOut" },
           }}
-          onClick={() => setActive(active === id ? null : id)}
-          className="flex items-center justify-center font-bold shadow-lg cursor-pointer backdrop-blur-2xl bg-white/5 rounded-2xl"
+          className="flex items-center justify-center font-bold shadow-lg cursor-pointer backdrop-blur-2xl bg-white/5 rounded-2xl overflow-hidden"
           style={{
             gridColumn: gridTransitionHandler({
               type: "col",
@@ -73,17 +75,31 @@ export default function BentoGrid({
             }),
           }}
         >
-          <Link href="#" className="p-4 w-full h-full grid items-center" onClick={(e) => e.preventDefault()}>
+          {/* <Link
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              setActive(null);
+              router.push("/");
+            }}
+          >
+            close
+          </Link> */}
+          <Link
+            href={active === id ? "/" : href}
+            className="p-4 w-full h-full grid items-center"
+            onClick={() => setActive(active === id ? null : id)}
+          >
             <motion.h2
               layout
               className={cn(
-                "overflow-visible whitespace-nowrap font-bitcount",
-                handleText(id)
+                "overflow-visible whitespace-nowrap w-max font-bitcount text-5xl",
+                "handleText(id)"
               )}
             >
-              {title}
+              {title ?? ""}
             </motion.h2>
-            {/* <RenderChildren currentPath={href}>{children}</RenderChildren> */}
+            <RenderChildren currentPath={href}>{children}</RenderChildren>
           </Link>
         </motion.div>
       ))}

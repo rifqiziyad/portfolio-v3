@@ -19,7 +19,8 @@ export default function RootLayout({
       <body>
         <AuroraBackground>
           <BentoGrid>
-            <RenderChildren currentPath="/">{children}</RenderChildren>
+            {/* <RenderChildren currentPath="/">{children}</RenderChildren> */}
+            {children}
           </BentoGrid>
         </AuroraBackground>
       </body>

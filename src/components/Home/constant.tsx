@@ -1,10 +1,10 @@
 const items = [
-  { id: 1, color: "bg-red-300", col: 5, row: 4, title: "About Me", href: "about" },
-  { id: 2, color: "bg-green-300", col: 3, row: 3, title: "Experience", href: "experience" },
-  { id: 3, color: "bg-blue-300", col: 4, row: 1, title: "Contact", href: "contact" },
-  { id: 4, color: "bg-purple-300", col: 4, row: 2, title: "Education", href: "education" },
-  { id: 5, color: "bg-yellow-300", col: 7, row: 3, title: "Portfolio", href: "portfolio" },
-  { id: 6, color: "bg-purple-300", col: 5, row: 2, title: "Skills", href: "skills" },
+  { id: 1, color: "bg-red-300", col: 5, row: 4, title: "About Me", href: "/about" },
+  { id: 2, color: "bg-green-300", col: 3, row: 3, title: "Experience", href: "/experience" },
+  { id: 3, color: "bg-blue-300", col: 4, row: 1, title: "Contact", href: "/contact" },
+  { id: 4, color: "bg-purple-300", col: 4, row: 2, title: "Education", href: "/education" },
+  { id: 5, color: "bg-yellow-300", col: 7, row: 3, title: "Portfolio", href: "/portfolio" },
+  { id: 6, color: "bg-purple-300", col: 5, row: 2, title: "Skills", href: "/skills" },
 ];
 
 const inactiveGrid1 = [
