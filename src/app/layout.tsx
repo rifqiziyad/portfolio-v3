@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import BentoGrid from "@/components/Home/BentoGridHome";
-import RenderChildren from "@/helpers/RenderChildren";
+import RouteTransition from "@/components/Layout/RouteTransition";
 
 export const metadata: Metadata = {
   title: "Rifqi Ziyad Imtinan",
@@ -19,8 +19,9 @@ export default function RootLayout({
       <body>
         <AuroraBackground>
           <BentoGrid>
-            {/* <RenderChildren currentPath="/">{children}</RenderChildren> */}
+            {/* <RouteTransition> */}
             {children}
+            {/* </RouteTransition> */}
           </BentoGrid>
         </AuroraBackground>
       </body>

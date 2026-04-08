@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useState } from "react";
 import { inactiveGrid, items } from "./constant";
 import RenderChildren from "@/helpers/RenderChildren";
@@ -20,7 +19,6 @@ export default function BentoGrid({
   children: React.ReactNode | null;
 }) {
   const [active, setActive] = useState<number | null>(null);
-
   const router = useRouter();
 
   const gridTransitionHandler = ({
@@ -41,68 +39,84 @@ export default function BentoGrid({
     } else return `span ${colRow}`;
   };
 
-  const handleText = (id: number) => {
-    const bigSize = "text-5xl";
-    const smallSize = "text-lg";
-    if (active) {
-      if (active === id) return bigSize;
-      else return smallSize;
-    } else return bigSize;
-  };
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-6 h-[100vh] w-[100%] z-999 p-4 gap-4">
-      {items.map(({ id, col, row, title, href }) => (
-        <motion.div
-          key={id}
-          layout
-          transition={{
-            layout: { type: "spring", stiffness: 180, damping: 24 },
-            gridColumn: { duration: 0.6, ease: "easeInOut" },
-            gridRow: { duration: 0.6, ease: "easeInOut" },
-          }}
-          className="flex items-center justify-center font-bold shadow-lg cursor-pointer backdrop-blur-2xl bg-white/5 rounded-2xl overflow-hidden"
-          style={{
-            gridColumn: gridTransitionHandler({
-              type: "col",
-              id: id,
-              colRow: col,
-            }),
-            gridRow: gridTransitionHandler({
-              type: "row",
-              id: id,
-              colRow: row,
-            }),
-          }}
-        >
-          {/* <Link
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              setActive(null);
-              router.push("/");
+    <motion.div
+      className={cn(
+        "grid grid-cols-1 md:grid-cols-12 md:grid-rows-6 h-[100vh] w-[100vw] z-999 p-4 gap-4"
+      )}
+    >
+      {items.map(({ id, col, row, title, href }) => {
+        const isActive = active === id;
+
+        return (
+          <motion.div
+            key={id}
+            layout
+            // transition={{
+            //   layout: { type: "spring", stiffness: 180, damping: 24 },
+            //   gridColumn: { duration: 0.6, ease: "easeInOut" },
+            //   gridRow: { duration: 0.6, ease: "easeInOut" },
+            // }}
+            className={cn(
+              "relative flex flex-col font-bold shadow-lg cursor-pointer backdrop-blur-2xl bg-white/5 rounded-2xl overflow-hidden"
+            )}
+            style={{
+              gridColumn: gridTransitionHandler({
+                type: "col",
+                id: id,
+                colRow: col,
+              }),
+              gridRow: gridTransitionHandler({
+                type: "row",
+                id: id,
+                colRow: row,
+              }),
             }}
           >
-            close
-          </Link> */}
-          <Link
-            href={active === id ? "/" : href}
-            className="p-4 w-full h-full grid items-center"
-            onClick={() => setActive(active === id ? null : id)}
-          >
-            <motion.h2
-              layout
+            {/* Tombol close hanya muncul saat active */}
+            {isActive && (
+              <div
+                className="absolute top-3 right-4 text-white text-lg cursor-pointer z-10"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActive(null);
+                  router.push("/");
+                }}
+              >
+                ✕
+              </div>
+            )}
+
+            <div
               className={cn(
-                "overflow-visible whitespace-nowrap w-max font-bitcount text-5xl",
-                "handleText(id)"
+                "p-6 flex flex-col transition-all duration-500 w-full h-full",
+                isActive ? "justify-start" : "justify-center items-center"
               )}
+              onClick={() => {
+                if (active === null) {
+                  setActive(id);
+                  router.push(href);
+                }
+              }}
             >
-              {title ?? ""}
-            </motion.h2>
-            <RenderChildren currentPath={href}>{children}</RenderChildren>
-          </Link>
-        </motion.div>
-      ))}
-    </div>
+              {/* Title */}
+              <motion.h2
+                layout={"position"}
+                // transition={{ duration: 0.5, ease: "easeInOut" }}
+                className={cn(
+                  "font-bitcount text-5xl text-center md:text-left whitespace-nowrap"
+                  // isActive ? "mb-6" : "mb-0"
+                )}
+              >
+                {title}
+              </motion.h2>
+
+              {/* Content dengan animasi height */}
+              <RenderChildren currentPath={href}>{children}</RenderChildren>
+            </div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
   );
 }
